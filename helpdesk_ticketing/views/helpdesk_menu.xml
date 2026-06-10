@@ -3,7 +3,7 @@
     Application menus for the Helpdesk Ticketing module.
 
     Root menu: Helpdesk
-    Submenu: Tickets (opens the ticket list/form action)
+    Submenus: Tickets, Configuration > Categories (manager only)
 -->
 <odoo>
 
@@ -16,6 +16,18 @@
               name="Tickets"
               parent="menu_helpdesk_root"
               action="action_helpdesk_ticket"
+              sequence="10"/>
+
+    <menuitem id="menu_helpdesk_configuration"
+              name="Configuration"
+              parent="menu_helpdesk_root"
+              sequence="100"
+              groups="helpdesk_ticketing.group_helpdesk_manager"/>
+
+    <menuitem id="menu_helpdesk_categories"
+              name="Categories"
+              parent="menu_helpdesk_configuration"
+              action="action_helpdesk_category"
               sequence="10"/>
 
 </odoo>

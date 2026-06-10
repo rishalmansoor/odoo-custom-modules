@@ -6,4 +6,5 @@ Imports every Python model file in this directory so Odoo can
 register them with the ORM registry.
 """
 
+from . import helpdesk_category
 from . import helpdesk_ticket
