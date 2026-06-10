@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    User interface definitions for helpdesk.ticket.
+
+    Includes list (tree), form, and search views plus the window action
+    used by the Helpdesk menu.
+-->
+<odoo>
+
+    <!-- List View -->
+    <record id="view_helpdesk_ticket_list" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.list</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <list string="Tickets" default_order="create_date desc">
+                <field name="ticket_no"/>
+                <field name="subject"/>
+                <field name="priority" widget="priority"/>
+                <field name="status" widget="badge"
+                       decoration-info="status == 'new'"
+                       decoration-warning="status == 'in_progress'"
+                       decoration-success="status == 'resolved'"
+                       decoration-muted="status == 'closed'"/>
+                <field name="assigned_user_id" widget="many2one_avatar_user"/>
+                <field name="create_date" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_helpdesk_ticket_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <form string="Ticket">
+                <header>
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="new,in_progress,resolved,closed"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="ticket_no" readonly="1"/>
+                        </h1>
+                        <label for="subject"/>
+                        <h2>
+                            <field name="subject" placeholder="Brief summary of the issue"/>
+                        </h2>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="priority" widget="priority"/>
+                            <field name="assigned_user_id" widget="many2one_avatar_user"/>
+                        </group>
+                        <group>
+                            <field name="resolution_date" readonly="status not in ('resolved', 'closed')"/>
+                            <field name="create_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" placeholder="Describe the issue in detail..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_helpdesk_ticket_search" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.search</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="arch" type="xml">
+            <search string="Search Tickets">
+                <field name="ticket_no"/>
+                <field name="subject"/>
+                <field name="assigned_user_id"/>
+                <separator/>
+                <filter string="New" name="filter_new" domain="[('status', '=', 'new')]"/>
+                <filter string="In Progress" name="filter_in_progress" domain="[('status', '=', 'in_progress')]"/>
+                <filter string="Resolved" name="filter_resolved" domain="[('status', '=', 'resolved')]"/>
+                <filter string="Closed" name="filter_closed" domain="[('status', '=', 'closed')]"/>
+                <separator/>
+                <filter string="High Priority" name="filter_high_priority" domain="[('priority', '=', '2')]"/>
+                <filter string="My Tickets" name="filter_my_tickets"
+                        domain="[('assigned_user_id', '=', uid)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_status" context="{'group_by': 'status'}"/>
+                    <filter string="Priority" name="group_priority" context="{'group_by': 'priority'}"/>
+                    <filter string="Assigned To" name="group_assigned_user"
+                            context="{'group_by': 'assigned_user_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Window Action -->
+    <record id="action_helpdesk_ticket" model="ir.actions.act_window">
+        <field name="name">Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_helpdesk_ticket_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first helpdesk ticket
+            </p>
+            <p>
+                Track internal IT support requests from creation to resolution.
+            </p>
+        </field>
+    </record>
+
+</odoo>

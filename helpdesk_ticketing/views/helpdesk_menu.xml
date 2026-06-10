@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Application menus for the Helpdesk Ticketing module.
+
+    Root menu: Helpdesk
+    Submenu: Tickets (opens the ticket list/form action)
+-->
+<odoo>
+
+    <menuitem id="menu_helpdesk_root"
+              name="Helpdesk"
+              sequence="50"
+              groups="helpdesk_ticketing.group_helpdesk_user"/>
+
+    <menuitem id="menu_helpdesk_tickets"
+              name="Tickets"
+              parent="menu_helpdesk_root"
+              action="action_helpdesk_ticket"
+              sequence="10"/>
+
+</odoo>
